@@ -1,37 +1,64 @@
-name: Setup Aider Project for Web Repository
+# .github/workflows/build-and-deploy.yml
 
+name: Build Mentat Flask App
+
+# Trigger the workflow on push to main branch or manual dispatch
 on:
-  workflow_dispatch:  # Allows manual triggering
   push:
     branches:
       - main
+  workflow_dispatch: # Allows manual triggering
 
 jobs:
-  setup:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      # Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # Use default GitHub token
+          python-version: '3.9'
 
-      - name: Set up Bash
+      # Install dependencies needed for the build script
+      - name: Install dependencies
         run: |
-          echo "Setting up environment..."
           sudo apt-get update
-          sudo apt-get install -y bash
+          sudo apt-get install -y git
 
-      - name: Run setup script
+      # Run the build script
+      - name: Run build script
         run: |
-          chmod +x setup_aider_project.sh
-          ./setup_aider_project.sh
+          chmod +x build.sh
+          ./build.sh
 
-      - name: Commit and push changes
+      # Configure git (needed for any git operations in the script)
+      - name: Configure git
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
+
+      # Add and commit generated files
+      - name: Commit generated files
+        run: |
+          cd mentat-flask-app
           git add .
-          git diff-index --quiet HEAD || git commit -m "Auto-generate Aider project files for Web"
-          git push origin main
+          git commit -m "Generate project files from build script" || echo "No changes to commit"
+          git push
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Authenticate push
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Optional: Verify the build
+      - name: Verify build
+        run: |
+          cd mentat-flask-app
+          ls -la
+          cat requirements.txt
+
+    env:
+      # Using the default GitHub token
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
