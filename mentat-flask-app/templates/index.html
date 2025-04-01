@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mentat.ai Web Interface</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Mentat.ai Web Interface</h1>
+    <form method="POST" action="{{ url_for('run_mentat') }}">
+        <p>GitHub Repository (e.g., username/repo):</p>
+        <input type="text" name="repo_name" required>
+        <p>Mentat Command (e.g., file1.py file2.py):</p>
+        <input type="text" name="mentat_command" required>
+        <br><br>
+        <button type="submit">Run Mentat</button>
+    </form>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div>
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</body>
+</html>
