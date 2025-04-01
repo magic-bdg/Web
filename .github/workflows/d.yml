@@ -1,0 +1,29 @@
+name: Move Folder Contents to Root
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  move-contents:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Move contents and clean up
+        run: |
+          # Move all files including hidden ones
+          mv mentat-flask-app/* .
+          mv mentat-flask-app/.* . 2>/dev/null || true
+          rm -rf mentat-flask-app
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Moved contents from mentat-flask-app to root" || echo "No changes to commit"
+          git push origin main
