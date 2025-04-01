@@ -1,4 +1,4 @@
-name: Setup Aider Project and Push to Render
+name: Setup Aider Project for Web Repository
 
 on:
   workflow_dispatch:  # Allows manual triggering
@@ -31,7 +31,7 @@ jobs:
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
           git add .
-          git diff-index --quiet HEAD || git commit -m "Auto-generate Aider project files"
+          git diff-index --quiet HEAD || git commit -m "Auto-generate Aider project files for Web"
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Authenticate push
