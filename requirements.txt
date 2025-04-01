@@ -1,4 +1,4 @@
 flask==2.3.3
 pygithub==2.3.0
-mentat==1.0.8
+mentat==1.0.19
 python-dotenv==1.0.1
