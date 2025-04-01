@@ -1,4 +1,4 @@
-name: Push to GitHub for Render Deployment
+name: Sync and Trigger Render Deployment
 
 on:
   push:
@@ -6,19 +6,20 @@ on:
       - main
 
 jobs:
-  deploy:
+  sync:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}  # Use the default GitHub token
 
       - name: Set up Git
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
 
-      - name: Push to GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Verify Repository Sync
         run: |
-          git push origin main
+          echo "Repository is already synced by the push event."
+          echo "Render will auto-deploy if connected to this branch."
