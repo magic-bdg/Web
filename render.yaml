@@ -1,16 +1,19 @@
+# render.yaml
+
 services:
   - type: web
     name: mentat-flask-app
     env: python
     plan: free
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "python -m pip install --upgrade pip && pip install -r requirements.txt"
     startCommand: "python app.py"
     envVars:
       - key: GITHUB_TOKEN
-        sync: false
+        sync: false  # You'll set this manually in Render dashboard
       - key: OPENAI_API_KEY
-        sync: false
+        sync: false  # You'll set this manually in Render dashboard
       - key: FLASK_SECRET_KEY
-        sync: false
+        sync: false  # You'll set this manually in Render dashboard
       - key: PYTHON_VERSION
-        value: "3.9.6"
+        value: "3.9.6"  # Specifies Python version
+    autoDeploy: true  # Automatically deploy on git push
