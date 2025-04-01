@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# Create project directory structure
-mkdir -p mentat-flask-app/{static,templates}
+# Create project directory structure in root
+mkdir -p static templates
 
-# Create app.py
-cat > mentat-flask-app/app.py << 'EOF'
+# Create app.py in root
+cat > app.py << 'EOF'
 from flask import Flask, render_template, request, redirect, url_for, flash
 from github import Github
 import subprocess
@@ -56,8 +56,8 @@ if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 EOF
 
-# Create index.html
-cat > mentat-flask-app/templates/index.html << 'EOF'
+# Create index.html in templates/
+cat > templates/index.html << 'EOF'
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,8 +87,8 @@ cat > mentat-flask-app/templates/index.html << 'EOF'
 </html>
 EOF
 
-# Create result.html
-cat > mentat-flask-app/templates/result.html << 'EOF'
+# Create result.html in templates/
+cat > templates/result.html << 'EOF'
 <!DOCTYPE html>
 <html>
 <head>
@@ -103,8 +103,8 @@ cat > mentat-flask-app/templates/result.html << 'EOF'
 </html>
 EOF
 
-# Create style.css
-cat > mentat-flask-app/static/style.css << 'EOF'
+# Create style.css in static/
+cat > static/style.css << 'EOF'
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -136,23 +136,23 @@ pre {
 }
 EOF
 
-# Create requirements.txt
-cat > mentat-flask-app/requirements.txt << 'EOF'
+# Create requirements.txt in root
+cat > requirements.txt << 'EOF'
 flask==2.3.3
 pygithub==2.3.0
 mentat==1.0.8
 python-dotenv==1.0.1
 EOF
 
-# Create .env template (empty values to be filled by user)
-cat > mentat-flask-app/.env << 'EOF'
+# Create .env template in root
+cat > .env << 'EOF'
 GITHUB_TOKEN=
 OPENAI_API_KEY=
 FLASK_SECRET_KEY=
 EOF
 
-# Create README.md
-cat > mentat-flask-app/README.md << 'EOF'
+# Create README.md in root
+cat > README.md << 'EOF'
 # Mentat Flask App
 
 ## Prerequisites
@@ -172,8 +172,8 @@ cat > mentat-flask-app/README.md << 'EOF'
 4. Set Start Command: `python app.py`
 EOF
 
-# Create Render configuration file
-cat > mentat-flask-app/render.yaml << 'EOF'
+# Create Render configuration file in root
+cat > render.yaml << 'EOF'
 services:
   - type: web
     name: mentat-flask-app
@@ -196,7 +196,6 @@ EOF
 chmod +x build.sh
 
 echo "Build script created successfully! To build the project:"
-echo "1. Run './build.sh' to create all files"
-echo "2. cd into mentat-flask-app/"
-echo "3. Fill in the .env file with your credentials"
-echo "4. Deploy to Render using the render.yaml configuration"
+echo "1. Run './build.sh' to create all files in the root directory"
+echo "2. Fill in the .env file with your credentials"
+echo "3. Deploy to Render using the render.yaml configuration"
