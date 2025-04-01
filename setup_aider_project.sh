@@ -1,14 +1,10 @@
 #!/bin/bash
 
-# Project directory name
-PROJECT_DIR="aider-website"
-
-# Create project directory and navigate into it
-mkdir -p "$PROJECT_DIR"
-cd "$PROJECT_DIR" || exit
+# Project directory name (root of repo in GitHub Actions)
+PROJECT_DIR="."
 
 # Create run_aider.py (Flask wrapper for Aider)
-cat << 'EOF' > run_aider.py
+cat << 'EOF' > "$PROJECT_DIR/run_aider.py"
 import os
 import subprocess
 from flask import Flask
@@ -16,7 +12,7 @@ from flask import Flask
 app = Flask(__name__)
 
 # Set the API key from environment variable
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY", "your-openai-api-key-here")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 # Start Aider in a subprocess
 def start_aider():
@@ -36,38 +32,29 @@ if __name__ == "__main__":
 EOF
 
 # Create requirements.txt
-cat << 'EOF' > requirements.txt
+cat << 'EOF' > "$PROJECT_DIR/requirements.txt"
 aider-chat
 flask
 EOF
 
 # Create .gitignore
-cat << 'EOF' > .gitignore
+cat << 'EOF' > "$PROJECT_DIR/.gitignore"
 __pycache__
 *.pyc
 .env
 EOF
 
 # Create README.md
-cat << 'EOF' > README.md
-# Aider Chat Website
+cat << 'EOF' > "$PROJECT_DIR/README.md"
+# Web - Aider Chat Website
 
 This project runs Aider Chat as a website hosted on Render.
 
 ## Setup
-1. Deploy to Render by connecting this repository.
+1. Deploy to Render by connecting the 'Web' repository.
 2. Set the `OPENAI_API_KEY` environment variable in Render.
 3. Check the Render logs for the Aider browser mode URL.
 EOF
 
-# Initialize Git repository
-git init
-git add .
-git commit -m "Initial commit: Set up Aider Chat website"
-
-echo "Project files created in $PROJECT_DIR and Git repository initialized."
-echo "Next steps:"
-echo "1. Create a new GitHub repository (e.g., aider-website)."
-echo "2. Run: git remote add origin https://github.com/yourusername/aider-website.git"
-echo "3. Run: git push -u origin main"
-echo "4. Set up the GitHub Actions workflow (see below) to automate updates."
+echo "Project files created in $PROJECT_DIR for the 'Web' repository."
+echo "The GitHub Actions workflow will commit and push these files."
